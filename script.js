@@ -134,11 +134,17 @@ function openModal(projectId) {
     updateCarousel();
     
     // Show/hide external link
-    if (project.externalLink) {
+    if (project.externalLink && typeof project.externalLink === 'string' && project.externalLink.trim() !== '') {
         modalProjectExternalLink.href = project.externalLink;
         modalProjectExternalLink.style.display = 'inline-flex';
+        modalProjectExternalLink.setAttribute('tabindex', '0');
+        modalProjectExternalLink.setAttribute('aria-label', 'View Full Project');
+        modalProjectExternalLink.target = '_blank';
+        modalProjectExternalLink.rel = 'noopener noreferrer';
     } else {
         modalProjectExternalLink.style.display = 'none';
+        modalProjectExternalLink.removeAttribute('href');
+        modalProjectExternalLink.setAttribute('tabindex', '-1');
     }
     
     // Show modal with animation
