@@ -1,21 +1,27 @@
 // Project data
 let projectsData = {};
 
-// Load projects from localStorage
-function loadProjects() {
-    const projects = JSON.parse(localStorage.getItem('projects')) || [];
-    projectsData = {};
-    projects.forEach(project => {
-        projectsData[project.id] = {
-            title: project.title,
-            images: project.images,
-            tags: project.tags,
-            shortDescription: project.description.substring(0, 100) + '...',
-            longDescription: project.description,
-            externalLink: project.externalLink
-        };
-    });
-    renderProjectCards();
+// Load projects from Firebase
+async function loadProjects() {
+    try {
+        const data = await loadProjectData();
+        if (data && data.projects) {
+            projectsData = {};
+            data.projects.forEach(project => {
+                projectsData[project.id] = {
+                    title: project.title,
+                    images: project.images,
+                    tags: project.tags,
+                    shortDescription: project.description.substring(0, 100) + '...',
+                    longDescription: project.description,
+                    externalLink: project.externalLink
+                };
+            });
+            renderProjectCards();
+        }
+    } catch (error) {
+        console.error('Error loading projects:', error);
+    }
 }
 
 // Render project cards in the portfolio
