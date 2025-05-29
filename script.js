@@ -110,7 +110,7 @@ function openModal(projectId) {
     
     // Update tags
     modalProjectTags.innerHTML = project.tags
-        .map(tag => `<span class="project-tag">${tag}</span>`)
+        .map(tag => `<span class="tag">${tag}</span>`)
         .join('');
     
     // Update carousel
@@ -138,7 +138,7 @@ function closeModal() {
         modal.style.display = 'none';
         document.body.style.overflow = '';
         currentProject = null;
-    }, 300); // Match the transition duration
+    }, 300);
 }
 
 // Update carousel images
@@ -149,7 +149,6 @@ function updateCarousel() {
         .map((src, index) => `
             <img src="${src}" 
                  alt="${currentProject.title} - Image ${index + 1}"
-                 class="${index === currentImageIndex ? 'active' : ''}"
                  style="display: ${index === currentImageIndex ? 'block' : 'none'}">
         `)
         .join('');
@@ -165,7 +164,7 @@ function navigateCarousel(direction) {
 
 // Event listeners
 document.addEventListener('DOMContentLoaded', () => {
-    // Load projects from localStorage
+    // Load projects from Firebase
     loadProjects();
 
     // Project buttons
@@ -186,6 +185,20 @@ document.addEventListener('DOMContentLoaded', () => {
     // Carousel navigation
     prevImageButton.addEventListener('click', () => navigateCarousel(-1));
     nextImageButton.addEventListener('click', () => navigateCarousel(1));
+
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && modal.classList.contains('active')) {
+            closeModal();
+        }
+        if (modal.classList.contains('active')) {
+            if (e.key === 'ArrowLeft') {
+                navigateCarousel(-1);
+            } else if (e.key === 'ArrowRight') {
+                navigateCarousel(1);
+            }
+        }
+    });
 
     // Mobile menu
     const mobileMenuButton = document.getElementById('mobile-menu-button');

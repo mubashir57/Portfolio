@@ -150,39 +150,57 @@ body {
     transform: translateY(-2px);
 }
 
+/* Project Modal Styles */
 .modal-overlay {
     position: fixed;
     top: 0;
     left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.7);
-    display: none;
-    justify-content: center;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
     align-items: center;
+    justify-content: center;
     z-index: 1000;
-    padding: 1rem;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.modal-overlay.active {
+    opacity: 1;
+    visibility: visible;
 }
 
 .modal-content {
-    background: white;
-    border-radius: 1rem;
+    background-color: #FFFFFF;
     padding: 2rem;
+    border-radius: 0.75rem;
+    box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04);
+    width: 90%;
     max-width: 800px;
-    width: 100%;
     max-height: 90vh;
     overflow-y: auto;
     position: relative;
+    transform: scale(0.95);
+    transition: transform 0.3s ease;
+}
+
+.modal-overlay.active .modal-content {
+    transform: scale(1);
 }
 
 .modal-close-button {
     position: absolute;
     top: 1rem;
     right: 1rem;
-    font-size: 1.5rem;
+    background: none;
+    border: none;
+    font-size: 1.8rem;
     color: #6B7280;
     cursor: pointer;
-    transition: color 0.3s ease;
+    padding: 0.5rem;
+    line-height: 1;
 }
 
 .modal-close-button:hover {
@@ -192,46 +210,76 @@ body {
 .modal-carousel {
     position: relative;
     margin-bottom: 1.5rem;
+    overflow: hidden;
+    border-radius: 0.5rem;
 }
 
 .modal-carousel-images {
     display: flex;
-    overflow: hidden;
-    border-radius: 0.5rem;
+    transition: transform 0.5s ease-in-out;
+    background-color: #F3F4F6;
 }
 
 .modal-carousel-images img {
     width: 100%;
     height: auto;
-    object-fit: cover;
+    max-height: 450px;
+    object-fit: contain;
+    display: block;
+    flex-shrink: 0;
 }
 
 .modal-carousel-button {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    background: rgba(255, 255, 255, 0.9);
+    background-color: rgba(0, 0, 0, 0.4);
+    color: white;
     border: none;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    padding: 0.75rem 1rem;
+    font-size: 1.5rem;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    z-index: 10;
+    border-radius: 0.375rem;
+    transition: background-color 0.2s ease;
 }
 
 .modal-carousel-button:hover {
-    background: white;
+    background-color: rgba(0, 0, 0, 0.6);
 }
 
 .modal-carousel-button.prev {
-    left: 1rem;
+    left: 0.5rem;
 }
 
 .modal-carousel-button.next {
-    right: 1rem;
+    right: 0.5rem;
+}
+
+#modalProjectTitle {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #111827;
+    margin-bottom: 0.75rem;
+}
+
+#modalProjectDescription {
+    font-size: 1rem;
+    color: #374151;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+}
+
+#modalProjectTags .tag {
+    display: inline-block;
+    background-color: #E0E7FF;
+    color: #3730A3;
+    font-size: 0.75rem;
+    font-weight: 600;
+    margin-right: 0.5rem;
+    padding: 0.125rem 0.625rem;
+    border-radius: 9999px;
+    margin-bottom: 0.5rem;
 }
 
 .project-tags {
@@ -323,35 +371,6 @@ button[type="submit"]:hover {
     box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
 }
 
-#modalProjectTitle {
-    font-size: 2rem;
-    font-weight: 700;
-    color: #111827;
-    margin-bottom: 0.75rem;
-}
-
-#modalProjectDescription {
-    font-size: 1rem;
-    color: #374151;
-    line-height: 1.6;
-    margin-bottom: 1.5rem;
-}
-
-#modalProjectTags .tag {
-    display: inline-block;
-    background-color: #E0E7FF;
-    color: #3730A3;
-    font-size: 0.75rem;
-    font-weight: 600;
-    margin-right: 0.5rem;
-    padding-left: 0.625rem;
-    padding-right: 0.625rem;
-    padding-top: 0.125rem;
-    padding-bottom: 0.125rem;
-    border-radius: 9999px;
-    margin-bottom: 0.5rem;
-}
-
 /* Enhanced Project Section Animations */
 .project-card {
     opacity: 0;
@@ -434,46 +453,4 @@ button[type="submit"]:hover {
 #projects .grid > *:nth-child(3) { transition-delay: 0.3s; }
 #projects .grid > *:nth-child(4) { transition-delay: 0.4s; }
 #projects .grid > *:nth-child(5) { transition-delay: 0.5s; }
-#projects .grid > *:nth-child(6) { transition-delay: 0.6s; }
-
-/* Modal Animation Enhancements */
-.modal-overlay {
-    opacity: 0;
-    visibility: hidden;
-    transition: all 0.3s ease;
-}
-
-.modal-overlay.active {
-    opacity: 1;
-    visibility: visible;
-}
-
-.modal-content {
-    transform: translateY(20px);
-    opacity: 0;
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.modal-overlay.active .modal-content {
-    transform: translateY(0);
-    opacity: 1;
-}
-
-.modal-carousel-images img {
-    transition: opacity 0.5s ease;
-}
-
-.modal-carousel-images img.active {
-    opacity: 1;
-}
-
-.modal-carousel-button {
-    opacity: 0;
-    transform: scale(0.8);
-    transition: all 0.3s ease;
-}
-
-.modal-overlay:hover .modal-carousel-button {
-    opacity: 1;
-    transform: scale(1);
-} 
+#projects .grid > *:nth-child(6) { transition-delay: 0.6s; } 
