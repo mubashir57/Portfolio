@@ -1,0 +1,479 @@
+body {
+    font-family: 'Inter', sans-serif;
+    color: #374151;
+    line-height: 1.6;
+}
+
+.section-heading {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: #1F2937;
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.section-subheading {
+    font-size: 1.25rem;
+    color: #6B7280;
+    margin-bottom: 3rem;
+    text-align: center;
+}
+
+.card {
+    background: white;
+    border-radius: 1rem;
+    padding: 1.5rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+.navbar-sticky {
+    background: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.action-link {
+    color: #2563EB;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    transition: color 0.3s ease;
+}
+
+.action-link:hover {
+    color: #1D4ED8;
+}
+
+.action-link i {
+    margin-left: 0.5rem;
+    transition: transform 0.3s ease;
+}
+
+.action-link:hover i {
+    transform: translateX(4px);
+}
+
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #F3F4F6;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #93C5FD;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #60A5FA;
+}
+
+.fade-in-section {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.fade-in-section.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.available-badge {
+    display: inline-flex;
+    align-items: center;
+    background: #EFF6FF;
+    color: #2563EB;
+    padding: 0.5rem 1rem;
+    border-radius: 9999px;
+    font-weight: 500;
+}
+
+.available-badge .dot {
+    width: 8px;
+    height: 8px;
+    background: #2563EB;
+    border-radius: 50%;
+    margin-right: 0.5rem;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.2);
+        opacity: 0.7;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.skill-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.skill-bar {
+    height: 8px;
+    background: #E5E7EB;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.skill-level {
+    height: 100%;
+    background: #2563EB;
+    border-radius: 4px;
+    transition: width 1s ease;
+}
+
+.social-icon {
+    color: #6B7280;
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.social-icon:hover {
+    color: #2563EB;
+    transform: translateY(-2px);
+}
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    padding: 1rem;
+}
+
+.modal-content {
+    background: white;
+    border-radius: 1rem;
+    padding: 2rem;
+    max-width: 800px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+}
+
+.modal-close-button {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    font-size: 1.5rem;
+    color: #6B7280;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.modal-close-button:hover {
+    color: #1F2937;
+}
+
+.modal-carousel {
+    position: relative;
+    margin-bottom: 1.5rem;
+}
+
+.modal-carousel-images {
+    display: flex;
+    overflow: hidden;
+    border-radius: 0.5rem;
+}
+
+.modal-carousel-images img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+}
+
+.modal-carousel-button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255, 255, 255, 0.9);
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.modal-carousel-button:hover {
+    background: white;
+}
+
+.modal-carousel-button.prev {
+    left: 1rem;
+}
+
+.modal-carousel-button.next {
+    right: 1rem;
+}
+
+.project-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.project-tag {
+    background: #EFF6FF;
+    color: #2563EB;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.875rem;
+}
+
+@media (max-width: 768px) {
+    .section-heading {
+        font-size: 2rem;
+    }
+
+    .section-subheading {
+        font-size: 1.125rem;
+    }
+
+    .modal-content {
+        padding: 1.5rem;
+    }
+}
+
+input, textarea {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid #E5E7EB;
+    border-radius: 0.5rem;
+    transition: border-color 0.3s ease;
+}
+
+input:focus, textarea:focus {
+    outline: none;
+    border-color: #2563EB;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+button[type="submit"] {
+    background: #2563EB;
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    transition: background-color 0.3s ease;
+}
+
+button[type="submit"]:hover {
+    background: #1D4ED8;
+}
+
+#mobile-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: white;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    z-index: 50;
+}
+
+/* Container */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+/* Utility classes */
+.text-gradient {
+    background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.shadow-soft {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.shadow-strong {
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+#modalProjectTitle {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #111827;
+    margin-bottom: 0.75rem;
+}
+
+#modalProjectDescription {
+    font-size: 1rem;
+    color: #374151;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+}
+
+#modalProjectTags .tag {
+    display: inline-block;
+    background-color: #E0E7FF;
+    color: #3730A3;
+    font-size: 0.75rem;
+    font-weight: 600;
+    margin-right: 0.5rem;
+    padding-left: 0.625rem;
+    padding-right: 0.625rem;
+    padding-top: 0.125rem;
+    padding-bottom: 0.125rem;
+    border-radius: 9999px;
+    margin-bottom: 0.5rem;
+}
+
+/* Enhanced Project Section Animations */
+.project-card {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.project-card.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.project-card:hover {
+    transform: translateY(-10px);
+}
+
+.project-card img {
+    transition: transform 0.5s ease;
+}
+
+.project-card:hover img {
+    transform: scale(1.05);
+}
+
+.project-tag {
+    transition: all 0.3s ease;
+}
+
+.project-card:hover .project-tag {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.action-link {
+    position: relative;
+    overflow: hidden;
+}
+
+.action-link::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: currentColor;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+}
+
+.action-link:hover::after {
+    transform: translateX(0);
+}
+
+/* Staggered Animation for Project Cards */
+#projects .grid {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.6s ease;
+}
+
+#projects .grid.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+#projects .grid > * {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+#projects .grid.is-visible > * {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+#projects .grid > *:nth-child(1) { transition-delay: 0.1s; }
+#projects .grid > *:nth-child(2) { transition-delay: 0.2s; }
+#projects .grid > *:nth-child(3) { transition-delay: 0.3s; }
+#projects .grid > *:nth-child(4) { transition-delay: 0.4s; }
+#projects .grid > *:nth-child(5) { transition-delay: 0.5s; }
+#projects .grid > *:nth-child(6) { transition-delay: 0.6s; }
+
+/* Modal Animation Enhancements */
+.modal-overlay {
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+.modal-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.modal-content {
+    transform: translateY(20px);
+    opacity: 0;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.modal-overlay.active .modal-content {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+.modal-carousel-images img {
+    transition: opacity 0.5s ease;
+}
+
+.modal-carousel-images img.active {
+    opacity: 1;
+}
+
+.modal-carousel-button {
+    opacity: 0;
+    transform: scale(0.8);
+    transition: all 0.3s ease;
+}
+
+.modal-overlay:hover .modal-carousel-button {
+    opacity: 1;
+    transform: scale(1);
+} 
