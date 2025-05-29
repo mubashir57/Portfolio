@@ -10,10 +10,19 @@ document.getElementById('logoutBtn').addEventListener('click', function() {
 });
 
 // Project management
-let projects = JSON.parse(localStorage.getItem('projects')) || [];
+let projects = [];
+
+// Load projects from Firebase on page load
+async function loadProjects() {
+    const data = await loadProjectData();
+    if (data && data.projects) {
+        projects = data.projects;
+        renderProjects();
+    }
+}
 
 // Add new project
-document.getElementById('addProjectForm').addEventListener('submit', function(e) {
+document.getElementById('addProjectForm').addEventListener('submit', async function(e) {
     e.preventDefault();
     
     const newProject = {
@@ -27,14 +36,20 @@ document.getElementById('addProjectForm').addEventListener('submit', function(e)
     };
     
     projects.unshift(newProject);
-    saveProjects();
+    await saveProjects();
     renderProjects();
     this.reset();
 });
 
-// Save projects to localStorage
-function saveProjects() {
-    localStorage.setItem('projects', JSON.stringify(projects));
+// Save projects to Firebase
+async function saveProjects() {
+    try {
+        await saveProjectData({ projects });
+        console.log('Projects saved successfully');
+    } catch (error) {
+        console.error('Error saving projects:', error);
+        alert('Error saving projects. Please try again.');
+    }
 }
 
 // Render projects list
@@ -81,16 +96,16 @@ function renderProjects() {
 }
 
 // Delete project
-function deleteProject(id) {
+async function deleteProject(id) {
     if (confirm('Are you sure you want to delete this project?')) {
         projects = projects.filter(project => project.id !== id);
-        saveProjects();
+        await saveProjects();
         renderProjects();
     }
 }
 
 // Edit project
-function editProject(id) {
+async function editProject(id) {
     const project = projects.find(p => p.id === id);
     if (!project) return;
     
@@ -102,7 +117,7 @@ function editProject(id) {
     
     // Remove the old project
     projects = projects.filter(p => p.id !== id);
-    saveProjects();
+    await saveProjects();
     renderProjects();
     
     // Scroll to form
@@ -112,5 +127,5 @@ function editProject(id) {
 // Sort projects
 document.getElementById('sortProjects').addEventListener('change', renderProjects);
 
-// Initial render
-renderProjects(); 
+// Initial load
+loadProjects(); 
