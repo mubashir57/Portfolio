@@ -96,6 +96,23 @@ const projectObserver = new IntersectionObserver((entries) => {
 projectCards.forEach(card => projectObserver.observe(card));
 projectObserver.observe(projectGrid);
 
+// Utility: Aesthetic fallback colors
+const fallbackColors = [
+    '#A5B4FC', // indigo-200
+    '#FBCFE8', // pink-200
+    '#FDE68A', // yellow-200
+    '#6EE7B7'  // green-300
+];
+
+// Helper to get a color based on project id
+function getFallbackColor(projectId) {
+    let hash = 0;
+    for (let i = 0; i < projectId.length; i++) {
+        hash = projectId.charCodeAt(i) + ((hash << 5) - hash);
+    }
+    return fallbackColors[Math.abs(hash) % fallbackColors.length];
+}
+
 // Enhanced modal animations
 function openModal(projectId) {
     const project = projectsData[projectId];
@@ -141,17 +158,43 @@ function closeModal() {
     }, 300);
 }
 
-// Update carousel images
+// Update carousel images (with fallback)
 function updateCarousel() {
     if (!currentProject) return;
-    
-    modalCarouselImages.innerHTML = currentProject.images
-        .map((src, index) => `
-            <img src="${src}" 
-                 alt="${currentProject.title} - Image ${index + 1}"
-                 style="display: ${index === currentImageIndex ? 'block' : 'none'}">
-        `)
-        .join('');
+    const projectId = Object.keys(projectsData).find(
+        key => projectsData[key] === currentProject
+    );
+    const images = currentProject.images && currentProject.images.length > 0 ? currentProject.images : [];
+    modalCarouselImages.innerHTML = '';
+    if (images.length === 0) {
+        // Fallback card
+        const fallbackDiv = document.createElement('div');
+        fallbackDiv.className = 'modal-fallback-card';
+        fallbackDiv.style.background = getFallbackColor(projectId || 'fallback');
+        fallbackDiv.innerHTML = `<span class="modal-fallback-title">${currentProject.title}</span>`;
+        modalCarouselImages.appendChild(fallbackDiv);
+        return;
+    }
+    images.forEach((src, index) => {
+        const img = document.createElement('img');
+        img.src = src;
+        img.alt = `${currentProject.title} - Image ${index + 1}`;
+        img.style.display = index === currentImageIndex ? 'block' : 'none';
+        img.style.objectFit = 'cover';
+        img.className = 'modal-carousel-img';
+        // Fallback if image fails to load
+        img.onerror = function() {
+            img.style.display = 'none';
+            if (!modalCarouselImages.querySelector('.modal-fallback-card')) {
+                const fallbackDiv = document.createElement('div');
+                fallbackDiv.className = 'modal-fallback-card';
+                fallbackDiv.style.background = getFallbackColor(projectId || 'fallback');
+                fallbackDiv.innerHTML = `<span class=\'modal-fallback-title\'>${currentProject.title}</span>`;
+                modalCarouselImages.appendChild(fallbackDiv);
+            }
+        };
+        modalCarouselImages.appendChild(img);
+    });
 }
 
 // Navigate carousel
