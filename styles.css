@@ -196,7 +196,7 @@ body {
     right: 1rem;
     background: none;
     border: none;
-    font-size: 1.8rem;
+    font-size: 0.8rem;
     color: #6B7280;
     cursor: pointer;
     padding: 0.5rem;
@@ -270,7 +270,7 @@ body {
     margin-bottom: 1.5rem;
 }
 
-#modalProjectTags .tag {
+/* #modalProjectTags .tag {
     display: inline-block;
     background-color: #E0E7FF;
     color: #3730A3;
@@ -280,12 +280,12 @@ body {
     padding: 0.125rem 0.625rem;
     border-radius: 9999px;
     margin-bottom: 0.5rem;
-}
+} */
 
 .project-tags {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.5rem;
+    gap: 1.5rem;
     margin-bottom: 1rem;
 }
 
@@ -497,7 +497,7 @@ button[type="submit"]:hover {
 .modal-close-button {
     z-index: 20;
     background: rgba(255,255,255,0.85);
-    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    box-shadow: 0 2px 8px rgba(0,0,0,1.08);
     border-radius: 50%;
     transition: background 0.2s;
 }

@@ -127,7 +127,7 @@ function openModal(projectId) {
     
     // Update tags
     modalProjectTags.innerHTML = project.tags
-        .map(tag => `<span class="tag">${tag}</span>`)
+        .map(tag => `<span class="mr-1 px-3 py-1 bg-blue-100 text-blue-600 rounded-full text-sm">${tag}</span>`)
         .join('');
     
     // Update carousel
