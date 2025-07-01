@@ -26,10 +26,16 @@ async function loadProjects() {
 
 // Render project cards in the portfolio
 function renderProjectCards() {
-    const projectsGrid = document.querySelector('#projects .grid');
+    const projectsGrid = document.getElementById('projectsGrid');
     if (!projectsGrid) return;
 
-    projectsGrid.innerHTML = Object.entries(projectsData).map(([id, project]) => `
+    const projectEntries = Object.entries(projectsData);
+
+    if (projectEntries.length === 0) {
+        projectsGrid.innerHTML = `<p class="text-gray-600 text-center col-span-full">No projects found. Add some from the admin dashboard!</p>`;
+        return;
+    }
+    projectsGrid.innerHTML = projectEntries.map(([id, project]) => `
         <div class="card project-card">
             <div class="overflow-hidden rounded-t-lg">
                 <img src="${project.images[0]}" 
@@ -210,15 +216,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // Load projects from Firebase
     loadProjects();
 
-    // Project buttons
-    document.querySelectorAll('.action-link[data-project]').forEach(button => {
-        button.addEventListener('click', (e) => {
-            e.preventDefault();
-            const projectId = button.dataset.project;
-            openModal(projectId);
-        });
-    });
-
     // Close modal
     closeModalButton.addEventListener('click', closeModal);
     modal.addEventListener('click', (e) => {
@@ -261,18 +258,18 @@ document.addEventListener('DOMContentLoaded', () => {
     // Smooth scroll for anchor links
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', (e) => {
-            e.preventDefault();
             const targetId = anchor.getAttribute('href');
-            const targetElement = document.querySelector(targetId);
-            
+            const targetElement = targetId.length > 1 ? document.querySelector(targetId) : null;
+
             if (targetElement) {
-                targetElement.scrollIntoView({
+                 e.preventDefault();
+                 targetElement.scrollIntoView({
                     behavior: 'smooth',
                     block: 'start'
                 });
-                
                 // Close mobile menu if open
-                mobileMenu.classList.add('hidden');
+                const mobileMenu = document.getElementById('mobile-menu');
+                if (mobileMenu) mobileMenu.classList.add('hidden');
             }
         });
     });
@@ -317,4 +314,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Update copyright year
     document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+    // Remove any event listener that prevents default on the external link
+    modalProjectExternalLink.addEventListener('click', (e) => {
+        // Do not prevent default; allow normal link behavior
+        // Optionally, you can add analytics or tracking here
+    });
 }); 

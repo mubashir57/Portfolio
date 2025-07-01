@@ -195,17 +195,11 @@
         <div class="container mx-auto px-6">
             <h2 class="section-heading">Featured Projects</h2>
             <p class="section-subheading">Some of my best work</p>
-            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <div class="card">
-                    <img src="https://placehold.co/600x400/E0E7FF/374151?text=VR+Shooting+Training" alt="VR Shooting Training" class="w-full h-48 object-cover rounded-t-lg mb-4">
-                    <h3 class="text-xl font-bold mb-2">VR Shooting Training</h3>
-                    <p class="text-gray-600 mb-4">An immersive VR training simulation for law enforcement personnel.</p>
-                    <div class="flex flex-wrap gap-2 mb-4">
-                        <span class="px-3 py-1 bg-blue-100 text-blue-600 rounded-full text-sm">Unity</span>
-                        <span class="px-3 py-1 bg-blue-100 text-blue-600 rounded-full text-sm">C#</span>
-                        <span class="px-3 py-1 bg-blue-100 text-blue-600 rounded-full text-sm">Oculus</span>
-                    </div>
-                    <button class="action-link" data-project="vr-shooting">View Details</button>
+            <div id="projectsGrid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Projects will be loaded here by script.js -->
+                <div class="card text-center p-8 col-span-full">
+                    <i class="fas fa-spinner fa-spin text-4xl text-blue-500"></i>
+                    <p class="mt-4 text-gray-600">Loading projects...</p>
                 </div>
             </div>
         </div>
@@ -308,8 +302,9 @@
         </div>
     </div>
 
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    <!-- Firebase Scripts (v9 compatibility mode) -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
     <script src="firebase-config.js"></script>
     <script src="script.js"></script>
 </body>
