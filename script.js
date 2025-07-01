@@ -189,7 +189,7 @@ function updateCarousel() {
                 const fallbackDiv = document.createElement('div');
                 fallbackDiv.className = 'modal-fallback-card';
                 fallbackDiv.style.background = getFallbackColor(projectId || 'fallback');
-                fallbackDiv.innerHTML = `<span class=\'modal-fallback-title\'>${currentProject.title}</span>`;
+                fallbackDiv.innerHTML = `<span class='modal-fallback-title'>${currentProject.title}</span>`;
                 modalCarouselImages.appendChild(fallbackDiv);
             }
         };
