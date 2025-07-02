@@ -29,6 +29,7 @@ document.getElementById('addProjectForm').addEventListener('submit', async funct
         id: Date.now().toString(),
         title: document.getElementById('projectTitle').value,
         images: document.getElementById('projectImages').value.split('\n').filter(url => url.trim()),
+        videos: document.getElementById('projectVideos').value.split('\n').filter(url => url.trim()),
         description: document.getElementById('projectDescription').value,
         externalLink: document.getElementById('projectExternalLink').value || null,
         tags: document.getElementById('projectTags').value.split(',').map(tag => tag.trim()),
@@ -111,6 +112,7 @@ async function editProject(id) {
     
     document.getElementById('projectTitle').value = project.title;
     document.getElementById('projectImages').value = project.images.join('\n');
+    document.getElementById('projectVideos').value = project.videos ? project.videos.join('\n') : '';
     document.getElementById('projectDescription').value = project.description;
     document.getElementById('projectExternalLink').value = project.externalLink || '';
     document.getElementById('projectTags').value = project.tags.join(', ');

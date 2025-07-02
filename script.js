@@ -14,7 +14,9 @@ async function loadProjects() {
                     tags: project.tags,
                     shortDescription: project.description.substring(0, 100) + '...',
                     longDescription: project.description,
-                    externalLink: project.externalLink
+                    externalLink: project.externalLink,
+                    videos: project.videos || [],
+                    media: [] // To be populated later
                 };
             });
             renderProjectCards();
@@ -80,6 +82,8 @@ const modalProjectExternalLink = document.getElementById('modalProjectExternalLi
 
 let currentImageIndex = 0;
 let currentProject = null;
+let currentMedia = [];
+
 
 // Enhanced animation handling for project cards
 const projectCards = document.querySelectorAll('.project-card');
@@ -119,6 +123,19 @@ function getFallbackColor(projectId) {
     return fallbackColors[Math.abs(hash) % fallbackColors.length];
 }
 
+// --- Video URL Parsers ---
+function getYoutubeEmbedUrl(url) {
+    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+    const match = url.match(regExp);
+    return (match && match[2].length === 11) ? `https://www.youtube.com/embed/${match[2]}?autoplay=1&mute=1&rel=0&modestbranding=1` : null;
+}
+
+function getGoogleDriveEmbedUrl(url) {
+    const regExp = /drive\.google\.com\/(?:file\/d\/|open\?id=)([\w-]+)/;
+    const match = url.match(regExp);
+    return (match && match[1]) ? `https://drive.google.com/file/d/${match[1]}/preview` : null;
+}
+
 // Enhanced modal animations
 function openModal(projectId) {
     const project = projectsData[projectId];
@@ -127,6 +144,11 @@ function openModal(projectId) {
     currentProject = project;
     currentImageIndex = 0;
     
+// Create a unified media array
+    const images = project.images.map(src => ({ type: 'image', src }));
+    const videos = project.videos.map(src => ({ type: 'video', src }));
+    currentMedia = [...images, ...videos];
+
     // Update modal content
     modalProjectTitle.textContent = project.title;
     modalProjectDescription.textContent = project.longDescription;
@@ -157,6 +179,8 @@ function openModal(projectId) {
 
 function closeModal() {
     modal.classList.remove('active');
+    // Stop any playing video by clearing the carousel content
+    if (modalCarouselImages) modalCarouselImages.innerHTML = '';
     setTimeout(() => {
         modal.style.display = 'none';
         document.body.style.overflow = '';
@@ -167,47 +191,56 @@ function closeModal() {
 // Update carousel images (with fallback)
 function updateCarousel() {
     if (!currentProject) return;
-    const projectId = Object.keys(projectsData).find(
-        key => projectsData[key] === currentProject
-    );
-    const images = currentProject.images && currentProject.images.length > 0 ? currentProject.images : [];
     modalCarouselImages.innerHTML = '';
-    if (images.length === 0) {
-        // Fallback card
-        const fallbackDiv = document.createElement('div');
-        fallbackDiv.className = 'modal-fallback-card';
-        fallbackDiv.style.background = getFallbackColor(projectId || 'fallback');
-        fallbackDiv.innerHTML = `<span class="modal-fallback-title">${currentProject.title}</span>`;
-        modalCarouselImages.appendChild(fallbackDiv);
+   const hasMedia = currentMedia.length > 0;
+    prevImageButton.style.display = hasMedia && currentMedia.length > 1 ? 'flex' : 'none';
+    nextImageButton.style.display = hasMedia && currentMedia.length > 1 ? 'flex' : 'none';
+
+    if (!hasMedia) {
+        const fallbackCard = document.createElement('div');
+        fallbackCard.className = 'modal-fallback-card';
+        fallbackCard.style.background = getFallbackColor(currentProject.id || 'default');
+        fallbackCard.innerHTML = `<span class="modal-fallback-title">${currentProject.title}</span>`;
+        modalCarouselImages.appendChild(fallbackCard);
         return;
     }
-    images.forEach((src, index) => {
-        const img = document.createElement('img');
-        img.src = src;
-        img.alt = `${currentProject.title} - Image ${index + 1}`;
-        img.style.display = index === currentImageIndex ? 'block' : 'none';
-        img.style.objectFit = 'cover';
-        img.className = 'modal-carousel-img';
-        // Fallback if image fails to load
-        img.onerror = function() {
-            img.style.display = 'none';
-            if (!modalCarouselImages.querySelector('.modal-fallback-card')) {
-                const fallbackDiv = document.createElement('div');
-                fallbackDiv.className = 'modal-fallback-card';
-                fallbackDiv.style.background = getFallbackColor(projectId || 'fallback');
-                fallbackDiv.innerHTML = `<span class='modal-fallback-title'>${currentProject.title}</span>`;
-                modalCarouselImages.appendChild(fallbackDiv);
-            }
-        };
-        modalCarouselImages.appendChild(img);
-    });
+    const item = currentMedia[currentImageIndex];
+    let element;
+
+    if (item.type === 'image') {
+        element = document.createElement('img');
+        element.src = item.src;
+        element.alt = `${currentProject.title} - Media ${currentImageIndex + 1}`;
+        element.className = 'modal-carousel-media';
+        element.onerror = () => { /* Add image error handling if needed */ };
+    } else if (item.type === 'video') {
+        const youtubeUrl = getYoutubeEmbedUrl(item.src);
+        const gdriveUrl = getGoogleDriveEmbedUrl(item.src);
+
+        if (youtubeUrl || gdriveUrl) {
+            element = document.createElement('iframe');
+            element.src = youtubeUrl || gdriveUrl;
+            element.setAttribute('frameborder', '0');
+            element.setAttribute('allow', 'autoplay; encrypted-media; picture-in-picture');
+            element.setAttribute('allowfullscreen', 'true');
+        } else { // Fallback for direct video links
+            element = document.createElement('video');
+            element.src = item.src;
+            element.controls = true;
+            element.autoplay = true;
+            element.muted = true;
+        }
+        element.className = 'modal-carousel-media';
+    }
+
+    if (element) modalCarouselImages.appendChild(element);
 }
 
 // Navigate carousel
 function navigateCarousel(direction) {
-    if (!currentProject) return;
+    if (!currentProject || currentMedia.length <= 1) return;
     
-    currentImageIndex = (currentImageIndex + direction + currentProject.images.length) % currentProject.images.length;
+    currentImageIndex = (currentImageIndex + direction + currentMedia.length) % currentMedia.length;
     updateCarousel();
 }
 
